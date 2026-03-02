@@ -29,7 +29,32 @@ export const heroFragment = fragmentOn("HeroComponent", {
 });
 type Hero = fragmentOn.infer<typeof heroFragment>;
 
-export function Hero(hero: Hero & { eventsKey: GeneralEvents["ingestKey"] }) {
+const HEALUMIN8_HERO = {
+  title: "Modernizing Primary Healthcare Infrastructure in Africa",
+  subtitle:
+    "Healumin8 digitizes patient records, automates hospital workflows, and provides real-time health system visibility for facilities and governments.",
+};
+
+export function Hero(
+  hero: Hero & {
+    eventsKey: GeneralEvents["ingestKey"];
+    titleOverride?: string;
+    subtitleOverride?: string;
+  },
+) {
+  const title =
+    hero.titleOverride ??
+    (hero.title === "Streamlined Communication for Iterating Fast"
+      ? HEALUMIN8_HERO.title
+      : hero.title);
+  const subtitle =
+    hero.subtitleOverride ??
+    (hero.title === "Streamlined Communication for Iterating Fast"
+      ? HEALUMIN8_HERO.subtitle
+      : hero.subtitle);
+  const isHealumin8Hero = hero.title === "Streamlined Communication for Iterating Fast";
+  const getActionLabel = (label: string) =>
+    isHealumin8Hero && label === "Get Started for Free" ? "Partner With Us" : label;
   return (
     <section className="relative min-h-[calc(630px-var(--header-height))] overflow-hidden pb-10">
       <div className="border-border dark:border-dark-border absolute top-0 left-0 z-0 grid h-full w-full grid-cols-[clamp(28px,10vw,120px)_auto_clamp(28px,10vw,120px)] border-b">
@@ -59,10 +84,10 @@ export function Hero(hero: Hero & { eventsKey: GeneralEvents["ingestKey"] }) {
         <div>
           <div className="mx-auto flex min-h-[288px] max-w-[80vw] shrink-0 flex-col items-center justify-center gap-2 px-2 py-4 sm:px-16 lg:px-24">
             <h1 className="text-text-primary dark:text-dark-text-primary max-w-(--breakpoint-lg) text-center text-[clamp(32px,7vw,64px)] leading-none font-medium tracking-[-1.44px] text-pretty md:tracking-[-2.16px]">
-              {hero.title}
+              {title}
             </h1>
             <h2 className="text-md text-text-tertiary dark:text-dark-text-tertiary max-w-2xl text-center text-pretty md:text-lg">
-              {hero.subtitle}
+              {subtitle}
             </h2>
           </div>
         </div>
@@ -82,7 +107,7 @@ export function Hero(hero: Hero & { eventsKey: GeneralEvents["ingestKey"] }) {
                 intent={type}
                 name="cta_click"
               >
-                {label}
+                {getActionLabel(label)}
               </TrackedButtonLink>
             ))}
           </div>

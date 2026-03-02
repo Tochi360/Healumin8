@@ -1,10 +1,10 @@
+import Image from "next/image";
 import { ButtonLink } from "@/common/button";
 import { Pump } from "basehub/react-pump";
 import { buttonFragment } from "@/lib/basehub/fragments";
 import { fragmentOn } from "basehub";
 
 import { DesktopMenu, MobileMenu } from "./navigation-menu";
-import { DarkLightImageAutoscale } from "@/common/dark-light-image";
 
 const headerLinksFragment = fragmentOn("HeaderNavbarLinkComponent", {
   _title: true,
@@ -86,7 +86,14 @@ export async function Header() {
             <div className="flex h-(--header-height) bg-surface-primary dark:bg-dark-surface-primary">
               <div className="container mx-auto grid w-full grid-cols-header place-items-center content-center items-center px-6 *:first:justify-self-start">
                 <ButtonLink unstyled className="flex items-center ring-offset-2" href="/">
-                  <DarkLightImageAutoscale priority {...settings.logo} />
+                  <Image
+                    src="/healumin8-logo.png"
+                    alt="Healumin8"
+                    width={120}
+                    height={28}
+                    className="h-6 w-auto max-w-[200px] object-contain dark:inline"
+                    priority
+                  />
                 </ButtonLink>
                 <DesktopMenu {...header} />
                 <MobileMenu {...header} />

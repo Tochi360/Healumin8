@@ -3,8 +3,7 @@ import { BaseHubImage } from "basehub/next-image";
 import { Heading } from "@/common/heading";
 import { Section } from "@/common/layout";
 import { fragmentOn } from "basehub";
-import { buttonFragment, headingFragment } from "@/lib/basehub/fragments";
-import { TrackedButtonLink } from "@/app/_components/tracked_button";
+import { headingFragment } from "@/lib/basehub/fragments";
 import { GeneralEvents } from "@/../basehub-types";
 
 export const featuresGridFragment = fragmentOn("FeaturesGridComponent", {
@@ -21,7 +20,6 @@ export const featuresGridFragment = fragmentOn("FeaturesGridComponent", {
     },
   },
   heading: headingFragment,
-  actions: buttonFragment,
 });
 
 type FeaturesGrid = fragmentOn.infer<typeof featuresGridFragment>;
@@ -29,7 +27,6 @@ type FeaturesGrid = fragmentOn.infer<typeof featuresGridFragment>;
 export function FeaturesGrid({
   heading,
   featuresGridList,
-  actions,
   eventsKey,
 }: FeaturesGrid & { eventsKey: GeneralEvents["ingestKey"] }) {
   return (
@@ -59,20 +56,6 @@ export function FeaturesGrid({
               </p>
             </div>
           </article>
-        ))}
-      </div>
-      <div className="flex items-center justify-center gap-3 md:order-3">
-        {actions?.map((action) => (
-          <TrackedButtonLink
-            key={action._id}
-            analyticsKey={eventsKey}
-            href={action.href}
-            intent={action.type}
-            name="cta_click"
-            size="lg"
-          >
-            {action.label}
-          </TrackedButtonLink>
         ))}
       </div>
     </Section>

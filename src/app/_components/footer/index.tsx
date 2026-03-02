@@ -5,7 +5,6 @@ import { Pump } from "basehub/react-pump";
 
 import { ThemeSwitcher } from "../theme-switcher";
 import { ButtonLink } from "@/common/button";
-import { DarkLightImageAutoscale } from "@/common/dark-light-image";
 import Link from "next/link";
 
 function isExternalLink(url: string | null | undefined) {
@@ -69,8 +68,15 @@ export async function Footer() {
         return (
           <footer className="border-t border-border py-16 dark:border-dark-border">
             <div className="container mx-auto grid grid-cols-2 grid-rows-[auto_auto_auto] place-items-start items-center gap-y-7 px-6 sm:grid-cols-[1fr_auto_1fr] sm:grid-rows-2 sm:gap-x-3 sm:gap-y-16">
-              <Link aria-label="Homepage" href="/">
-                <DarkLightImageAutoscale priority {...settings.logo} />
+              <Link aria-label="Healumin8 Home" href="/">
+                <Image
+                  src="/healumin8-logo.png"
+                  alt="Healumin8"
+                  width={120}
+                  height={28}
+                  className="h-6 w-auto max-w-[200px] object-contain"
+                  priority
+                />
               </Link>
               <nav className="col-start-1 row-start-2 flex flex-col gap-x-2 gap-y-3 self-center sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:flex-row sm:items-center sm:place-self-center md:gap-x-4 lg:gap-x-8">
                 {footer.navbar.items.map(({ _title, url }) => (
