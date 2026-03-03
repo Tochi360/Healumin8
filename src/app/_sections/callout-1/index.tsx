@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { SunIcon } from "@radix-ui/react-icons";
 
 import { Section } from "@/common/layout";
 import { fragmentOn } from "basehub";
@@ -42,6 +43,9 @@ export function Callout(callout: Callout & { eventsKey: GeneralEvents["ingestKey
         <div className="bg-surface-secondary dark:bg-dark-surface-secondary absolute top-0 left-0 z-10 h-full w-full blur-3xl filter" />
         {/* -------- */}
         <div className="relative z-20 flex flex-col items-center gap-2 text-center">
+          <figure className="border-border bg-surface-secondary dark:border-dark-border dark:bg-dark-surface-secondary flex size-9 shrink-0 items-center justify-center rounded-full border p-2">
+            <SunIcon className="size-[18px] text-text-tertiary dark:text-dark-text-tertiary" />
+          </figure>
           <h4 className="text-text-primary dark:text-dark-text-primary text-center text-3xl font-medium tracking-tighter sm:max-w-full sm:px-0 md:text-4xl">
             {callout.title}
           </h4>

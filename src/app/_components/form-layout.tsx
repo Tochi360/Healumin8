@@ -27,42 +27,14 @@ export async function FormLayout({
   return (
     <div className="mx-auto flex w-full max-w-xl flex-col gap-5 rounded-xl border border-surface-secondary bg-surface-primary p-5 shadow-md dark:border-dark-border dark:bg-dark-surface-secondary dark:shadow-none">
       <header className="flex flex-col gap-3">
-        <Pump
-          queries={[
-            {
-              site: {
-                settings: {
-                  logoLite: {
-                    url: true,
-                    width: true,
-                    height: true,
-                  },
-                },
-              },
-            },
-          ]}
-        >
-          {async ([
-            {
-              site: {
-                settings: { logoLite },
-              },
-            },
-          ]) => {
-            "use server";
-
-            return (
-              <Image
-                priority
-                alt="Logo"
-                className="size-8 self-start"
-                height={logoLite.height}
-                src={logoLite.url}
-                width={logoLite.width}
-              />
-            );
-          }}
-        </Pump>
+        <Image
+          priority
+          alt="Healumin8"
+          className="h-8 w-auto self-start"
+          height={32}
+          src="/healumin8-logo.png"
+          width={128}
+        />
         <div className="flex flex-col gap-1">
           <h1 className="text-xl font-medium">{title}</h1>
           <div className="text-sm text-text-secondary dark:text-dark-text-secondary">

@@ -22,6 +22,22 @@ import { useHasRendered } from "@/hooks/use-has-rendered";
 /*                                   Desktop                                  */
 /* -------------------------------------------------------------------------- */
 
+type HeaderCta = HeaderFragment["rightCtas"]["items"][number];
+
+const getCtaLabel = (cta: HeaderCta) => {
+  if (cta.type === "primary") return "Partner With Us";
+  if (cta.type === "secondary") return "Request Demo";
+  return cta.label;
+};
+
+const getCtaHref = (cta: HeaderCta) => {
+  if (cta.type === "secondary") {
+    // Always send "Request Demo" to the request-a-demo form section
+    return "/#request-a-demo-form";
+  }
+  return cta.href ?? "#";
+};
+
 export function NavigationMenuHeader({
   links,
   className,
@@ -153,8 +169,13 @@ export function DesktopMenu({ navbar, rightCtas }: HeaderFragment) {
       <div className="hidden items-center gap-2 justify-self-end lg:flex">
         {rightCtas.items.map((cta) => {
           return (
-            <ButtonLink key={cta._id} className="px-3.5!" href={cta.href} intent={cta.type}>
-              {cta.label}
+            <ButtonLink
+              key={cta._id}
+              className="px-3.5!"
+              href={getCtaHref(cta)}
+              intent={cta.type}
+            >
+              {getCtaLabel(cta)}
             </ButtonLink>
           );
         })}
@@ -184,33 +205,17 @@ export function MobileMenu({ navbar, rightCtas }: HeaderFragment) {
         {isOn ? (
           <div className="bg-surface-primary dark:bg-dark-surface-primary fixed top-[calc(var(--header-height)+1px)] left-0 z-10 h-auto w-full">
             <div className="flex flex-col gap-8 px-6 py-8">
-              <nav className="flex flex-col gap-4">
-                {navbar.items.map((link) =>
-                  link.sublinks.items.length > 0 ? (
-                    <ItemWithSublinks
-                      key={link._id}
-                      _id={link._id}
-                      _title={link._title}
-                      sublinks={link.sublinks.items}
-                      onClick={handleOff}
-                    />
-                  ) : (
-                    <Link
-                      key={link._id}
-                      className="flex items-center gap-2 rounded-sm px-3 py-1.5"
-                      href={link.href ?? "#"}
-                      onClick={handleOff}
-                    >
-                      {link._title}
-                    </Link>
-                  ),
-                )}
-              </nav>
+              {/* Mobile nav removed per design request */}
               <div className="flex items-center justify-start gap-2">
                 {rightCtas.items.map((cta) => {
                   return (
-                    <ButtonLink key={cta._id} href={cta.href} intent={cta.type} size="lg">
-                      {cta.label}
+                    <ButtonLink
+                      key={cta._id}
+                      href={getCtaHref(cta)}
+                      intent={cta.type}
+                      size="lg"
+                    >
+                      {getCtaLabel(cta)}
                     </ButtonLink>
                   );
                 })}

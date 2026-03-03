@@ -1,7 +1,7 @@
 import { type DarkLightImageFragment } from "@/lib/basehub/fragments";
 import clsx from "clsx";
 import { BaseHubImage } from "basehub/next-image";
-import type { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 
 type DarkLightImageProps = DarkLightImageFragment &
   Omit<ImageProps, "src" | "alt"> & {
@@ -19,38 +19,63 @@ export function DarkLightImage({
   withPlaceholder,
   ...props
 }: DarkLightImageProps) {
+  const isLocalDark = dark?.url.startsWith("/");
+  const isLocalLight = light.url.startsWith("/");
+
   return (
     <>
       {dark ? (
-        <BaseHubImage
-          alt={dark.alt ?? alt ?? ""}
-          className={clsx("hidden dark:block", className)}
-          height={height ?? dark.height}
-          src={dark.url}
-          width={width ?? dark.width}
+        isLocalDark ? (
+          <Image
+            alt={dark.alt ?? alt ?? ""}
+            className={clsx("hidden dark:block", className)}
+            height={height ?? dark.height ?? 600}
+            src={dark.url}
+            width={width ?? dark.width ?? 1216}
+            {...props}
+          />
+        ) : (
+          <BaseHubImage
+            alt={dark.alt ?? alt ?? ""}
+            className={clsx("hidden dark:block", className)}
+            height={height ?? dark.height}
+            src={dark.url}
+            width={width ?? dark.width}
+            {...props}
+            {...(withPlaceholder && dark.blurDataURL
+              ? {
+                  placeholder: "blur",
+                  blurDataURL: dark.blurDataURL,
+                }
+              : {})}
+          />
+        )
+      ) : null}
+      {isLocalLight ? (
+        <Image
+          alt={light.alt ?? alt ?? ""}
+          className={clsx(dark && "dark:hidden", className)}
+          height={height ?? light.height ?? 600}
+          src={light.url}
+          width={width ?? light.width ?? 1216}
           {...props}
-          {...(withPlaceholder && dark.blurDataURL
+        />
+      ) : (
+        <BaseHubImage
+          alt={light.alt ?? alt ?? ""}
+          className={clsx(dark && "dark:hidden", className)}
+          height={height ?? light.height}
+          src={light.url}
+          width={width ?? light.width}
+          {...props}
+          {...(withPlaceholder && light.blurDataURL
             ? {
                 placeholder: "blur",
-                blurDataURL: dark.blurDataURL,
+                blurDataURL: light.blurDataURL,
               }
             : {})}
         />
-      ) : null}
-      <BaseHubImage
-        alt={light.alt ?? alt ?? ""}
-        className={clsx(dark && "dark:hidden", className)}
-        height={height ?? light.height}
-        src={light.url}
-        width={width ?? light.width}
-        {...props}
-        {...(withPlaceholder && light.blurDataURL
-          ? {
-              placeholder: "blur",
-              blurDataURL: light.blurDataURL,
-            }
-          : {})}
-      />
+      )}
     </>
   );
 }

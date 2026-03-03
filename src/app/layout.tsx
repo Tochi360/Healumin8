@@ -7,7 +7,6 @@ import { basehub } from "basehub";
 import { Providers } from "./providers";
 import { Header } from "./_components/header";
 import { Footer } from "./_components/footer";
-import { Newsletter } from "./_sections/newsletter";
 import { draftMode } from "next/headers";
 
 const geist = Geist({
@@ -78,24 +77,42 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
   return {
     title: {
-      default: data.site.settings.metadata.defaultTitle,
-      template: data.site.settings.metadata.titleTemplate,
+      default:
+        data.site.settings.metadata.defaultTitle ||
+        "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa",
+      template:
+        data.site.settings.metadata.titleTemplate || "%s – Healumin8",
     },
-    applicationName: data.site.settings.metadata.sitename,
-    description: data.site.settings.metadata.defaultDescription,
+    applicationName:
+      data.site.settings.metadata.sitename || "Healumin8",
+    description:
+      data.site.settings.metadata.defaultDescription ||
+      "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.",
     icons: [
       {
-        url: data.site.settings.metadata.favicon.url,
+        url: "/favicon.png",
         rel: "icon",
-        type: data.site.settings.metadata.favicon.mimeType,
+        type: "image/png",
       },
     ],
-    openGraph: { type: "website", images, siteName: data.site.settings.metadata.sitename },
+    openGraph: {
+      type: "website",
+      images,
+      siteName:
+        data.site.settings.metadata.sitename || "Healumin8",
+      title:
+        data.site.settings.metadata.defaultTitle ||
+        "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa",
+      description:
+        data.site.settings.metadata.defaultDescription ||
+        "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.",
+    },
     twitter: {
       card: "summary_large_image",
       images,
-      site: data.site.settings.metadata.sitename,
-      creator: xAccount,
+      site:
+        data.site.settings.metadata.sitename || "Healumin8",
+      creator: xAccount || "Healumin8",
     },
   };
 };
@@ -113,7 +130,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Header />
           <main className="min-h-[calc(100svh-var(--header-height))]">{children}</main>
-          <Newsletter />
           <Footer />
         </Providers>
       </body>

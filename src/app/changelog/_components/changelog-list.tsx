@@ -1,15 +1,12 @@
 "use client";
 import * as React from "react";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { BaseHubImage } from "basehub/next-image";
 import clsx from "clsx";
 
 import { ButtonLink } from "@/common/button";
-import { AvatarsGroup } from "@/common/avatars-group";
 import { formatDate } from "@/utils/dates";
 
 import { type ChangelogListFragment } from "./changelog.fragment";
-import { Author } from "@/common/avatar";
 
 export function ChangelogList({ changelogPosts }: { changelogPosts: ChangelogListFragment[] }) {
   const [activePostId, setActivePostId] = React.useState(changelogPosts[0]?._id ?? "");
@@ -51,98 +48,64 @@ export function ChangelogList({ changelogPosts }: { changelogPosts: ChangelogLis
 
   return (
     <div className="flex w-full flex-col">
-      {changelogPosts.map((post, idx) => (
+      {/* Horizontal timeline with horizontal scroll on all viewports */}
+      <div className="relative flex w-full flex-row flex-nowrap gap-6 overflow-x-auto border-b border-border pb-8 dark:border-dark-border md:gap-8 md:pb-1">
+        {/* Horizontal line (desktop only; mobile scrolls so line omitted) */}
         <div
-          key={post._id}
-          className="group flex w-full flex-col gap-4 md:flex-row"
-          data-post-id={post._id}
-        >
-          <div className="relative flex w-[110px] shrink-0 items-start justify-between">
-            <p
-              className={clsx(
-                "relative bottom-1.5 text-sm text-text-tertiary dark:text-dark-text-tertiary",
-                post._id === activePostId && "text-accent-500!",
-                prevPostIdx === activeIdx - 1 && "delay-500",
-              )}
-            >
-              {formatDate(post.publishedAt)}
-            </p>
-            <div
-              className={clsx(
-                "relative hidden h-full border-r border-border group-last:border-transparent dark:border-dark-border md:block",
-              )}
-            >
+          className="absolute left-0 right-0 top-14 hidden h-px w-full border-t border-border dark:border-dark-border md:block"
+          style={{ top: "calc(1rem + 3.5rem - 0.25rem)" }}
+          aria-hidden
+        />
+        {changelogPosts.map((post, idx) => (
+          <div
+            key={post._id}
+            className="group relative flex min-w-[280px] max-w-[400px] flex-shrink-0 flex-col items-center rounded-lg border border-border bg-surface-secondary/50 p-4 dark:border-dark-border dark:bg-dark-surface-secondary/50 md:border-0 md:bg-transparent md:p-0 md:pt-4"
+            data-post-id={post._id}
+          >
+            {/* Date + dot */}
+            <div className="relative z-10 flex h-14 w-full flex-col items-center justify-end gap-1.5 md:w-auto">
+              <p
+                className={clsx(
+                  "text-center text-sm text-text-tertiary dark:text-dark-text-tertiary",
+                  post._id === activePostId && "text-accent-500!",
+                  prevPostIdx === activeIdx - 1 && "delay-500",
+                )}
+              >
+                {formatDate(post.publishedAt)}
+              </p>
               <div
                 className={clsx(
-                  "absolute -left-[3.5px] top-0 size-2 transform rounded-full bg-grayscale-400 shadow-neon shadow-grayscale-400/10 transition-all dark:bg-grayscale-600 dark:shadow-grayscale-600/20",
+                  "size-2 shrink-0 rounded-full bg-grayscale-400 shadow-neon shadow-grayscale-400/10 dark:bg-grayscale-600 dark:shadow-grayscale-600/20",
                   {
-                    "bg-accent-500! shadow-accent-500/10!": activeIdx >= idx,
+                    "bg-accent-500! shadow-accent-500/10!": activeIdx === idx,
                     "delay-500": prevPostIdx === activeIdx - 1,
                   },
                 )}
               />
-              <div
-                className={clsx(
-                  "absolute -left-0 top-0 z-10 h-full w-px origin-top scale-y-0 transform-gpu rounded-full bg-accent-500! shadow-accent-500/10! transition-transform duration-500 group-last:hidden",
-                  activeIdx - 1 === idx && "scale-y-100",
-                  activeIdx > idx && "scale-y-100 delay-150",
-                )}
+            </div>
+            <article className="mt-4 flex w-full min-w-0 max-w-full flex-col gap-3 md:mt-6 md:max-w-[400px] md:gap-4">
+              <BaseHubImage
+                alt={post._title}
+                blurDataURL={post.image.blurDataURL}
+                className="h-40 w-full max-w-full rounded-lg border border-border object-cover dark:border-dark-border md:h-[280px] md:max-w-[400px]"
+                height={280}
+                placeholder="blur"
+                priority={idx === 0}
+                src={post.image.url}
+                width={400}
               />
-            </div>
+              <div className="flex min-w-0 flex-col gap-1">
+                <ButtonLink unstyled href={`/changelog/${post._slug}`}>
+                  <h2 className="text-base font-medium md:text-lg">{post._title}</h2>
+                </ButtonLink>
+                <p className="line-clamp-2 text-sm text-text-secondary dark:text-dark-text-secondary md:text-base">
+                  {post.excerpt}
+                </p>
+              </div>
+            </article>
           </div>
-          <article className="mb-16 flex flex-col gap-6">
-            <BaseHubImage
-              alt={post._title}
-              blurDataURL={post.image.blurDataURL}
-              className="rounded-lg border border-border dark:border-dark-border"
-              height={480}
-              placeholder="blur"
-              priority={idx === 0}
-              src={post.image.url}
-              width={647}
-            />
-            <div className="flex flex-col gap-1">
-              <ButtonLink unstyled href={`/changelog/${post._slug}`}>
-                <h2 className="text-xl font-medium">{post._title}</h2>
-              </ButtonLink>
-              <p className="text-sm text-text-secondary dark:text-dark-text-secondary md:text-base">
-                {post.excerpt}
-              </p>
-            </div>
-            <footer className="flex items-center justify-between">
-              {post.authors.length > 1 ? (
-                <AvatarsGroup animate>
-                  {post.authors.map((author) => (
-                    <Author key={author._id} {...author} />
-                  ))}
-                </AvatarsGroup>
-              ) : post.authors[0] ? (
-                <div className="flex items-center gap-2 rounded-full">
-                  <BaseHubImage
-                    alt={post.authors[0]._title}
-                    height={24}
-                    src={post.authors[0].image.url}
-                    width={24}
-                  />
-                  <p className="text-sm text-text-tertiary dark:text-dark-text-tertiary">
-                    {post.authors[0]._title}
-                  </p>
-                </div>
-              ) : null}
-              <ButtonLink
-                href={`/changelog/${post._slug}`}
-                icon={<ArrowRightIcon />}
-                iconSide="right"
-                intent="secondary"
-                size="md"
-                type="button"
-              >
-                Read more
-              </ButtonLink>
-            </footer>
-          </article>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

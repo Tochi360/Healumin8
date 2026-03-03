@@ -1,10 +1,26 @@
 import { BaseHubImage } from "basehub/next-image";
+import {
+  BarChartIcon,
+  CodeIcon,
+  LockClosedIcon,
+  Share1Icon,
+} from "@radix-ui/react-icons";
 
 import { Heading } from "@/common/heading";
 import { Section } from "@/common/layout";
+import { DarkLightImage } from "@/common/dark-light-image";
 import { fragmentOn } from "basehub";
 import { darkLightImageFragment, headingFragment } from "@/lib/basehub/fragments";
-import { DarkLightImage } from "@/common/dark-light-image";
+
+const ICON_BY_KEY: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  lock: LockClosedIcon,
+  share: Share1Icon,
+  code: CodeIcon,
+  chart: BarChartIcon,
+};
 
 export const bigFeatureFragment = fragmentOn("FeaturesBigImageComponent", {
   _analyticsKey: true,
@@ -36,24 +52,33 @@ export function BigFeature({ featuresBigImageList, heading, image }: BigFeature)
       <Heading {...heading}>
         <h4>{heading.title}</h4>
       </Heading>
-      <div className="flex w-full flex-col items-start gap-4 md:order-2 md:grid md:grid-cols-3 md:gap-16">
-        {featuresBigImageList.items.map(({ _title, description, icon }) => (
+      <div className="flex w-full flex-col items-start gap-4 md:order-2 md:grid md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-16">
+        {featuresBigImageList.items.map((item) => {
+          const { _title, description, icon } = item;
+          const iconKey = "iconKey" in item ? (item as { iconKey?: string }).iconKey : undefined;
+          const IconComponent = iconKey ? ICON_BY_KEY[iconKey] : null;
+          return (
           <article key={_title} className="flex flex-col gap-4">
             <figure className="flex size-9 items-center justify-center rounded-full border border-border bg-surface-secondary p-2 dark:border-dark-border dark:bg-dark-surface-secondary">
-              <BaseHubImage
-                alt={icon.alt ?? _title}
-                className="dark:invert"
-                height={18}
-                src={icon.url}
-                width={18}
-              />
+              {IconComponent ? (
+                <IconComponent className="size-[18px] text-[#0a0a0a] dark:invert" />
+              ) : (
+                <BaseHubImage
+                  alt={icon.alt ?? _title}
+                  className="dark:invert"
+                  height={18}
+                  src={icon.url}
+                  width={18}
+                />
+              )}
             </figure>
             <div className="flex flex-col items-start gap-1">
               <h5 className="text-lg font-medium">{_title}</h5>
               <p className="text-text-tertiary dark:text-dark-text-tertiary">{description}</p>
             </div>
           </article>
-        ))}
+          );
+        })}
       </div>
     </Section>
   );

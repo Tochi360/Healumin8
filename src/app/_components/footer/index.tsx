@@ -7,10 +7,6 @@ import { ThemeSwitcher } from "../theme-switcher";
 import { ButtonLink } from "@/common/button";
 import Link from "next/link";
 
-function isExternalLink(url: string | null | undefined) {
-  return url && /^https?:\/\//.test(url);
-}
-
 export async function Footer() {
   return (
     <Pump
@@ -78,19 +74,6 @@ export async function Footer() {
                   priority
                 />
               </Link>
-              <nav className="col-start-1 row-start-2 flex flex-col gap-x-2 gap-y-3 self-center sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:flex-row sm:items-center sm:place-self-center md:gap-x-4 lg:gap-x-8">
-                {footer.navbar.items.map(({ _title, url }) => (
-                  <ButtonLink
-                    key={_title}
-                    unstyled
-                    className="px-2 font-light tracking-tight text-text-tertiary hover:text-text-primary dark:text-dark-text-secondary dark:hover:text-dark-text-primary"
-                    href={url ?? "#"}
-                    target={isExternalLink(url) ? "_blank" : "_self"}
-                  >
-                    {_title}
-                  </ButtonLink>
-                ))}
-              </nav>
               <div className="col-start-2 row-start-1 flex items-center gap-3 self-center justify-self-end sm:col-span-1 sm:col-start-3 sm:row-start-1">
                 <p className="hidden text-text-tertiary dark:text-dark-text-tertiary sm:block">
                   Appearance
@@ -99,59 +82,49 @@ export async function Footer() {
               </div>
 
               <p className="col-span-2 text-pretty text-sm text-text-tertiary dark:text-dark-text-tertiary sm:col-span-1 ">
-                {footer.copyright}
+                ©Copyright @ 2026 Healumin8, with ❤️ from Lagos
               </p>
 
               <ul className="col-span-2 col-start-1 row-start-3 flex w-full items-center gap-x-3.5 gap-y-4 sm:col-span-1 sm:col-start-3 sm:row-start-2 sm:w-auto sm:flex-wrap sm:justify-self-end">
-                {footer.socialLinks.map((link) => {
-                  return (
-                    <li key={link._title} className="shrink-0 sm:first:ml-auto">
-                      <ButtonLink
-                        unstyled
-                        className="block aspect-square p-0.5 hover:brightness-75 dark:brightness-50 dark:hover:brightness-75"
-                        href={link.url}
-                        target="_blank"
+                {footer.socialLinks
+                  .filter(
+                    (link) =>
+                      /x|twitter/i.test(link._title ?? "") ||
+                      /linkedin/i.test(link._title ?? ""),
+                  )
+                  .map((link) => {
+                    const isX = /x|twitter/i.test(link._title ?? "");
+                    return (
+                      <li
+                        key={link._title}
+                        className="shrink-0 sm:first:ml-auto"
                       >
-                        <BaseHubImage
-                          alt={link._title}
-                          height={24}
-                          src={link.icon?.url ?? ""}
-                          width={24}
-                        />
-                      </ButtonLink>
-                    </li>
-                  );
-                })}
-
-                {settings.showUseTemplate ? (
-                  <li>
-                    <PoweredByBasehub className="ml-auto shrink-0" />
-                  </li>
-                ) : null}
+                        <ButtonLink
+                          unstyled
+                          className="block aspect-square p-0.5 hover:brightness-75 dark:brightness-50 dark:hover:brightness-75"
+                          href={
+                            isX
+                              ? "https://x.com/Healumin8"
+                              : (link.url ?? "https://linkedin.com")
+                          }
+                          target="_blank"
+                          aria-label={`Healumin8 on ${link._title}`}
+                        >
+                          <BaseHubImage
+                            alt={link._title}
+                            height={24}
+                            src={link.icon?.url ?? ""}
+                            width={24}
+                          />
+                        </ButtonLink>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           </footer>
         );
       }}
     </Pump>
-  );
-}
-
-function PoweredByBasehub({ className }: { className?: string }) {
-  return (
-    <ButtonLink
-      unstyled
-      className={className}
-      href="https://basehub.com/basehub/marketing-website"
-      target="_blank"
-    >
-      <Image
-        alt="Use BaseHub Template"
-        className="h-7 w-auto"
-        height={28}
-        src="https://basehub.com/template-button.svg"
-        width={150}
-      />
-    </ButtonLink>
   );
 }
