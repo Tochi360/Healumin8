@@ -70,6 +70,8 @@ export async function FeaturesList({
               "Paper hospital records being converted into structured digital patient profiles",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
           light: {
             ...item.image.light,
@@ -79,6 +81,8 @@ export async function FeaturesList({
               "Paper hospital records being converted into structured digital patient profiles",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
         },
         characteristics: {
@@ -102,6 +106,8 @@ export async function FeaturesList({
               "Diagram of hospitals and clinics connected to a central health data hub",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
           light: {
             ...item.image.light,
@@ -111,6 +117,8 @@ export async function FeaturesList({
               "Diagram of hospitals and clinics connected to a central health data hub",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
         },
         characteristics: {
@@ -139,6 +147,8 @@ export async function FeaturesList({
               "Patient viewing a secure health record app that aggregates data from multiple hospitals",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
           light: {
             ...item.image.light,
@@ -148,6 +158,8 @@ export async function FeaturesList({
               "Patient viewing a secure health record app that aggregates data from multiple hospitals",
             height: 558,
             width: 1024,
+            aspectRatio: "1024/558",
+            blurDataURL: "",
           },
         },
         characteristics: {

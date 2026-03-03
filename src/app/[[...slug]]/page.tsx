@@ -282,12 +282,16 @@ export default async function DynamicPage({
                                           alt: "Primary healthcare centre records room with paper-based filing",
                                           height: 374,
                                           width: 560,
+                                          aspectRatio: "560/374",
+                                          blurDataURL: "",
                                         },
                                         light: {
                                           url: "/images/healthcare-records.png",
                                           alt: "Primary healthcare centre records room with paper-based filing",
                                           height: 374,
                                           width: 560,
+                                          aspectRatio: "560/374",
+                                          blurDataURL: "",
                                         },
                                       },
                                     }
