@@ -15,7 +15,8 @@ export const calloutFragment = fragmentOn("CalloutComponent", {
   subtitle: true,
   actions: buttonFragment,
 });
-type Callout = fragmentOn.infer<typeof calloutFragment>;
+export type CalloutFragment = fragmentOn.infer<typeof calloutFragment>;
+type Callout = CalloutFragment;
 
 export function Callout(callout: Callout & { eventsKey: GeneralEvents["ingestKey"] }) {
   return (

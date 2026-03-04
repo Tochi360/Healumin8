@@ -10,7 +10,7 @@ import { basehub, fragmentOn } from "basehub";
 
 import { AccordionFaq } from "../_sections/accordion-faq";
 import { BigFeature, bigFeatureFragment } from "../_sections/features/big-feature";
-import { Callout, calloutFragment } from "../_sections/callout-1";
+import { Callout, calloutFragment, type CalloutFragment } from "../_sections/callout-1";
 import { Callout2, calloutv2Fragment } from "../_sections/callout-2";
 import { Companies, companiesFragment } from "../_sections/companies";
 import { Faq, faqFragment } from "../_sections/faq";
@@ -327,7 +327,7 @@ export default async function DynamicPage({
                     return (
                       <div id="callout">
                         <Callout
-                          {...calloutSection}
+                          {...(calloutSection as CalloutFragment)}
                           title="Our insight"
                           subtitle="AI in healthcare is impossible without clean, structured, interoperable data. Instead of building AI on top of broken systems, we are rebuilding the infrastructure layer first."
                           eventsKey={generalEvents.ingestKey}
