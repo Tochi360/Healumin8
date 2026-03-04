@@ -112,10 +112,14 @@ export const generateMetadata = async ({
     return notFound();
   }
 
+  const defaultTitle =
+    "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa";
+  const defaultDescription =
+    "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.";
+
   return {
-    title: page.metadataOverrides.title ?? data.site.settings.metadata.defaultTitle,
-    description:
-      page.metadataOverrides.description ?? data.site.settings.metadata.defaultDescription,
+    title: page.metadataOverrides.title ?? defaultTitle,
+    description: page.metadataOverrides.description ?? defaultDescription,
   };
 };
 
@@ -244,7 +248,7 @@ export default async function DynamicPage({
             section.__typename !== "PricingComponent" &&
             section.__typename !== "PricingTableComponent" &&
             section.__typename !== "TestimonialSliderComponent" &&
-            section.__typename !== "FeaturesBigImageComponent",
+            section.__typename !== "CompaniesComponent",
         );
 
         const slugs = params?.slug ?? [];

@@ -60,34 +60,33 @@ export const generateMetadata = async (): Promise<Metadata> => {
     },
   });
 
-  const images = [{ url: data.site.settings.metadata.ogImage.url }];
-
+  const images = [{ url: data.site.settings.metadata.ogImage?.url ?? "" }].filter(
+    (i) => i.url,
+  );
   let xAccount: string | undefined = undefined;
-
-  if (data.site.settings.metadata.xAccount) {
+  if (data.site.settings.metadata.xAccount?.url) {
     try {
       const xUrl = new URL(data.site.settings.metadata.xAccount.url);
       const split = xUrl.pathname.split("/");
-
       xAccount = split[split.length - 1];
     } catch {
       // invalid url noop
     }
   }
 
+  const siteName = "Healumin8";
+  const defaultTitle =
+    "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa";
+  const defaultDescription =
+    "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.";
+
   return {
     title: {
-      default:
-        data.site.settings.metadata.defaultTitle ||
-        "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa",
-      template:
-        data.site.settings.metadata.titleTemplate || "%s – Healumin8",
+      default: defaultTitle,
+      template: "%s – Healumin8",
     },
-    applicationName:
-      data.site.settings.metadata.sitename || "Healumin8",
-    description:
-      data.site.settings.metadata.defaultDescription ||
-      "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.",
+    applicationName: siteName,
+    description: defaultDescription,
     icons: [
       {
         url: "/favicon.png",
@@ -97,22 +96,16 @@ export const generateMetadata = async (): Promise<Metadata> => {
     ],
     openGraph: {
       type: "website",
-      images,
-      siteName:
-        data.site.settings.metadata.sitename || "Healumin8",
-      title:
-        data.site.settings.metadata.defaultTitle ||
-        "Healumin8 – Modernizing Primary Healthcare Infrastructure in Africa",
-      description:
-        data.site.settings.metadata.defaultDescription ||
-        "Healumin8 digitizes patient records, connects fragmented hospital systems, and builds AI-ready healthcare infrastructure for emerging markets.",
+      images: images.length ? images : undefined,
+      siteName,
+      title: defaultTitle,
+      description: defaultDescription,
     },
     twitter: {
       card: "summary_large_image",
-      images,
-      site:
-        data.site.settings.metadata.sitename || "Healumin8",
-      creator: xAccount || "Healumin8",
+      images: images.length ? images : undefined,
+      site: siteName,
+      creator: xAccount ?? "Healumin8",
     },
   };
 };

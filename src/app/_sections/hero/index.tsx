@@ -1,11 +1,23 @@
 import clsx from "clsx";
 
 import { fragmentOn } from "basehub";
+import { AvatarsGroup } from "@/common/avatars-group";
+import { Avatar } from "@/common/avatar";
+import { avatarFragment } from "@/lib/basehub/fragments";
 import { TrackedButtonLink } from "@/app/_components/tracked_button";
 import { GeneralEvents } from "@/../basehub-types";
 
 export const heroFragment = fragmentOn("HeroComponent", {
   _analyticsKey: true,
+  customerSatisfactionBanner: {
+    text: true,
+    avatars: {
+      items: {
+        _id: true,
+        avatar: avatarFragment,
+      },
+    },
+  },
   title: true,
   subtitle: true,
   actions: {
@@ -43,6 +55,10 @@ export function Hero(
   const isHealumin8Hero = hero.title === "Streamlined Communication for Iterating Fast";
   const getActionLabel = (label: string) =>
     isHealumin8Hero && label === "Get Started for Free" ? "Partner With Us" : label;
+  const bannerText =
+    isHealumin8Hero
+      ? "Trusted by healthcare providers and health systems"
+      : hero.customerSatisfactionBanner.text;
   return (
     <section className="relative min-h-[calc(630px-var(--header-height))] overflow-hidden pb-10">
       <div className="border-border dark:border-dark-border absolute top-0 left-0 z-0 grid h-full w-full grid-cols-[clamp(28px,10vw,120px)_auto_clamp(28px,10vw,120px)] border-b">
@@ -57,6 +73,18 @@ export function Hero(
       <figure className="bg-surface-primary dark:bg-dark-surface-primary pointer-events-none absolute right-[7vw] bottom-[-50px] z-20 hidden aspect-square w-[30vw] rounded-full opacity-50 blur-[100px] md:block" />
       {/* --- */}
       <div className="divide-border dark:divide-dark-border relative z-10 flex flex-col divide-y pt-[35px]">
+        <div className="flex flex-col items-center justify-end">
+          <div className="border-border dark:border-dark-border flex items-center gap-2 border! border-b-0! px-4 py-2">
+            <AvatarsGroup>
+              {hero.customerSatisfactionBanner.avatars.items.map(({ avatar, _id }) => (
+                <Avatar priority {...avatar} key={_id} />
+              ))}
+            </AvatarsGroup>
+            <p className="text-text-tertiary dark:text-dark-text-tertiary text-sm tracking-tight">
+              {bannerText}
+            </p>
+          </div>
+        </div>
         <div>
           <div className="mx-auto flex min-h-[288px] max-w-[80vw] shrink-0 flex-col items-center justify-center gap-2 px-2 py-4 sm:px-16 lg:px-24">
             <h1 className="text-text-primary dark:text-dark-text-primary max-w-(--breakpoint-lg) text-center text-[clamp(32px,7vw,64px)] leading-none font-medium tracking-[-1.44px] text-pretty md:tracking-[-2.16px]">
