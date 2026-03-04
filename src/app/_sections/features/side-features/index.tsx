@@ -4,7 +4,6 @@ import { Heading } from "@/common/heading";
 import { Section } from "@/common/layout";
 import { fragmentOn } from "basehub";
 import { headingFragment } from "@/lib/basehub/fragments";
-import { TrackedButtonLink } from "@/app/_components/tracked_button";
 import { GeneralEvents } from "@/../basehub-types";
 
 export const featuresSideBySideFragment = fragmentOn("FeaturesSideBySideComponent", {
@@ -61,7 +60,6 @@ const OUR_ADVANTAGE_ITEMS: { _title: string; subtitle: string }[] = [
 export function SideFeatures({
   featuresSideBySideList,
   heading,
-  actions,
   eventsKey,
   useOurAdvantageContent,
 }: FeaturesGrid & {
@@ -100,20 +98,6 @@ export function SideFeatures({
           <Heading className="items-start" {...effectiveHeading}>
             <h4>{effectiveHeading.title}</h4>
           </Heading>
-          <div className="flex items-center gap-3 md:order-3">
-            {actions?.map((action) => (
-              <TrackedButtonLink
-                key={action._id}
-                analyticsKey={eventsKey}
-                href={action.href}
-                intent={action.type}
-                name="main_cta_click"
-                size="lg"
-              >
-                {action.label}
-              </TrackedButtonLink>
-            ))}
-          </div>
         </div>
       </div>
       <div className="w-full flex-1 shrink-0 lg:w-1/2 lg:flex-1">

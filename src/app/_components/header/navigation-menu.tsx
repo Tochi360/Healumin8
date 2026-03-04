@@ -165,8 +165,7 @@ function NavigationMenuLinkWithMenu({ _title, href, sublinks }: HeaderLiksFragme
 export function DesktopMenu({ navbar, rightCtas }: HeaderFragment) {
   return (
     <>
-      <NavigationMenuHeader className="hidden lg:flex" links={navbar.items} />
-      <div className="hidden items-center gap-2 justify-self-end lg:flex">
+      <div className="col-start-3 hidden items-center gap-2 justify-self-end lg:flex">
         {rightCtas.items.map((cta) => {
           return (
             <ButtonLink

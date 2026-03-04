@@ -1,6 +1,7 @@
 import { fragmentOn } from "basehub";
 import { Section } from "@/common/layout";
 import { TrackedButtonLink } from "@/app/_components/tracked_button";
+import { ScrollToSectionLink } from "@/app/_components/scroll-to-section-link";
 import { buttonFragment } from "@/lib/basehub/fragments";
 import { GeneralEvents } from "@/../basehub-types";
 
@@ -11,6 +12,11 @@ export const calloutv2Fragment = fragmentOn("CalloutV2Component", {
   actions: buttonFragment,
 });
 type Callout2 = fragmentOn.infer<typeof calloutv2Fragment>;
+
+function isHashScrollHref(href: string | null | undefined): boolean {
+  if (!href) return false;
+  return href === "#features-cards" || href.endsWith("#features-cards");
+}
 
 export function Callout2(callout: Callout2 & { eventsKey: GeneralEvents["ingestKey"] }) {
   return (
@@ -25,17 +31,29 @@ export function Callout2(callout: Callout2 & { eventsKey: GeneralEvents["ingestK
           </p>
         </div>
         <div className="grid grid-cols-2 items-center gap-2 md:flex lg:flex-col">
-          {callout.actions?.map((action) => (
-            <TrackedButtonLink
-              key={action._id}
-              analyticsKey={callout.eventsKey}
-              href={action.href}
-              intent={action.type}
-              name="secondary_cta_click"
-            >
-              {action.label}
-            </TrackedButtonLink>
-          ))}
+          {callout.actions?.map((action) =>
+            isHashScrollHref(action.href) ? (
+              <ScrollToSectionLink
+                key={action._id}
+                href={action.href ?? "#features-cards"}
+                intent={action.type}
+                analyticsKey={callout.eventsKey}
+                name="secondary_cta_click"
+              >
+                {action.label}
+              </ScrollToSectionLink>
+            ) : (
+              <TrackedButtonLink
+                key={action._id}
+                analyticsKey={callout.eventsKey}
+                href={action.href ?? "#"}
+                intent={action.type}
+                name="secondary_cta_click"
+              >
+                {action.label}
+              </TrackedButtonLink>
+            ),
+          )}
         </div>
       </article>
     </Section>

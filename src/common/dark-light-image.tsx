@@ -31,6 +31,7 @@ export function DarkLightImage({
             className={clsx("hidden dark:block", className)}
             height={height ?? dark.height ?? 600}
             src={dark.url}
+            unoptimized
             width={width ?? dark.width ?? 1216}
             {...props}
           />
@@ -57,6 +58,7 @@ export function DarkLightImage({
           className={clsx(dark && "dark:hidden", className)}
           height={height ?? light.height ?? 600}
           src={light.url}
+          unoptimized
           width={width ?? light.width ?? 1216}
           {...props}
         />

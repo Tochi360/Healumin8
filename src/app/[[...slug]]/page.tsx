@@ -243,7 +243,8 @@ export default async function DynamicPage({
           (section) =>
             section.__typename !== "PricingComponent" &&
             section.__typename !== "PricingTableComponent" &&
-            section.__typename !== "TestimonialSliderComponent",
+            section.__typename !== "TestimonialSliderComponent" &&
+            section.__typename !== "FeaturesBigImageComponent",
         );
 
         const slugs = params?.slug ?? [];
@@ -251,6 +252,11 @@ export default async function DynamicPage({
         const firstFeaturesIndex = sections?.findIndex(
           (s) => s.__typename === "FeaturesCardsComponent",
         ) ?? -1;
+        const calloutSection =
+          sections?.find(
+            (s) => s.__typename === "CalloutComponent" && s._slug === "callout",
+          ) ?? null;
+        let calloutRendered = false;
 
         return (
           <>
@@ -312,6 +318,19 @@ export default async function DynamicPage({
                         />
                       </div>
                     )}
+                  {isFirstFeatures && calloutSection && !calloutRendered && (() => {
+                    calloutRendered = true;
+                    return (
+                      <div id="callout">
+                        <Callout
+                          {...calloutSection}
+                          title="Our insight"
+                          subtitle="AI in healthcare is impossible without clean, structured, interoperable data. Instead of building AI on top of broken systems, we are rebuilding the infrastructure layer first."
+                          eventsKey={generalEvents.ingestKey}
+                        />
+                      </div>
+                    );
+                  })()}
                   <div id={section._slug}>
                     {section.__typename === "FaqComponent" &&
                     section._slug === "faq" ? (
@@ -320,6 +339,8 @@ export default async function DynamicPage({
                         questions={{ items: FAQ_OVERRIDE_ITEMS }}
                       />
                     ) : section.__typename === "CalloutComponent" &&
+                    section._slug === "callout" &&
+                    calloutRendered ? null : section.__typename === "CalloutComponent" &&
                     section._slug === "callout" ? (
                       <Callout
                         {...section}
@@ -410,6 +431,30 @@ export default async function DynamicPage({
                       <Form
                         {...section}
                         title="Request a demo with the Healumin8 team"
+                      />
+                    ) : section.__typename === "CalloutV2Component" &&
+                      section._slug === "callout-v2" ? (
+                      <Callout2
+                        {...section}
+                        title="Ready to bring your hospital onto a connected data layer?"
+                        subtitle="Join hospitals and health systems digitizing records and enabling interoperable, patient-centred care."
+                        actions={[
+                          {
+                            _id: "healumin8-cta-1",
+                            label: "Request a demo",
+                            href: "/#request-a-demo-form",
+                            type: "primary",
+                            icon: null,
+                          },
+                          {
+                            _id: "healumin8-cta-2",
+                            label: "See our solution",
+                            href: "/#features-cards",
+                            type: "secondary",
+                            icon: null,
+                          },
+                        ]}
+                        eventsKey={generalEvents.ingestKey}
                       />
                     ) : (
                       <SectionsUnion

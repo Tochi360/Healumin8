@@ -194,8 +194,9 @@ export async function FeaturesList({
               <DarkLightImage
                 {...image}
                 className="block aspect-video h-[200px] w-full rounded-lg border border-border object-cover dark:border-dark-border md:h-full"
-                height={374}
-                width={560}
+                height={748}
+                width={1120}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 480px, 560px"
               />
             </figure>
             <div className="flex flex-col gap-8 p-5 pt-6 md:flex-1 md:p-10">
