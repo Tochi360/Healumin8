@@ -260,7 +260,14 @@ export default async function DynamicPage({
           sections?.find(
             (s) => s.__typename === "CalloutComponent" && s._slug === "callout",
           ) ?? null;
-        let calloutRendered = false;
+        const calloutSectionIndex =
+          sections?.findIndex(
+            (s) => s.__typename === "CalloutComponent" && s._slug === "callout",
+          ) ?? -1;
+        const isCalloutRenderedAfterProblem =
+          isHome &&
+          firstFeaturesIndex >= 0 &&
+          calloutSectionIndex > firstFeaturesIndex;
 
         return (
           <>
@@ -288,19 +295,19 @@ export default async function DynamicPage({
                                       ...item,
                                       image: {
                                         dark: {
-                                          url: "/images/healthcare-records.png",
-                                          alt: "Primary healthcare centre records room with paper-based filing",
-                                          height: 374,
-                                          width: 560,
-                                          aspectRatio: "560/374",
+                                          url: "/images/problem-africa-healthcare-diverse.png",
+                                          alt: "Black healthcare workers in a clinic with paper records and fragmented systems",
+                                          height: 558,
+                                          width: 1024,
+                                          aspectRatio: "1024/558",
                                           blurDataURL: "",
                                         },
                                         light: {
-                                          url: "/images/healthcare-records.png",
-                                          alt: "Primary healthcare centre records room with paper-based filing",
-                                          height: 374,
-                                          width: 560,
-                                          aspectRatio: "560/374",
+                                          url: "/images/problem-africa-healthcare-diverse.png",
+                                          alt: "Black healthcare workers in a clinic with paper records and fragmented systems",
+                                          height: 558,
+                                          width: 1024,
+                                          aspectRatio: "1024/558",
                                           blurDataURL: "",
                                         },
                                       },
@@ -311,6 +318,7 @@ export default async function DynamicPage({
                           mainTitleOverride="Africa's Healthcare Crisis:"
                           cardFramed={false}
                           hideDescriptions
+                          preserveFirstCardImage
                           firstCardTitleOverride="Fragmented Systems, Paper Chaos, and Inaccessible Care"
                           firstCardCharacteristicsOverride={[
                             { _title: "Hospitals still operate on paper records." },
@@ -322,9 +330,9 @@ export default async function DynamicPage({
                         />
                       </div>
                     )}
-                  {isFirstFeatures && calloutSection && !calloutRendered && (() => {
-                    calloutRendered = true;
-                    return (
+                  {isFirstFeatures &&
+                    calloutSection &&
+                    isCalloutRenderedAfterProblem && (
                       <div id="callout">
                         <Callout
                           {...(calloutSection as CalloutFragment)}
@@ -333,8 +341,7 @@ export default async function DynamicPage({
                           eventsKey={generalEvents.ingestKey}
                         />
                       </div>
-                    );
-                  })()}
+                    )}
                   <div id={section._slug}>
                     {section.__typename === "FaqComponent" &&
                     section._slug === "faq" ? (
@@ -344,7 +351,7 @@ export default async function DynamicPage({
                       />
                     ) : section.__typename === "CalloutComponent" &&
                     section._slug === "callout" &&
-                    calloutRendered ? null : section.__typename === "CalloutComponent" &&
+                    isCalloutRenderedAfterProblem ? null : section.__typename === "CalloutComponent" &&
                     section._slug === "callout" ? (
                       <Callout
                         {...section}
@@ -389,6 +396,24 @@ export default async function DynamicPage({
                           title: "The Future Layer of Healthcare Infrastructure",
                           subtitle:
                             "We are building the foundation layer for AI driven healthcare in emerging markets.",
+                        }}
+                        image={{
+                          dark: {
+                            url: "/images/connected-healthcare-ecosystem.png",
+                            alt: "Integrated healthcare data ecosystem: central data hub, hospitals, clinics, and APIs connected",
+                            height: 600,
+                            width: 1216,
+                            aspectRatio: "1216/600",
+                            blurDataURL: "",
+                          },
+                          light: {
+                            url: "/images/connected-healthcare-ecosystem.png",
+                            alt: "Integrated healthcare data ecosystem: central data hub, hospitals, clinics, and APIs connected",
+                            height: 600,
+                            width: 1216,
+                            aspectRatio: "1216/600",
+                            blurDataURL: "",
+                          },
                         }}
                         featuresBigImageList={{
                           items: (() => {
@@ -435,6 +460,7 @@ export default async function DynamicPage({
                       <Form
                         {...section}
                         title="Request a demo with the Healumin8 team"
+                        submissionsEmail="Hello@healumin8.com"
                       />
                     ) : section.__typename === "CalloutV2Component" &&
                       section._slug === "callout-v2" ? (

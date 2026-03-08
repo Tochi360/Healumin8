@@ -5,15 +5,12 @@ import { Section } from "@/common/layout";
 import { fragmentOn } from "basehub";
 
 import s from "./callout-1.module.scss";
-import { TrackedButtonLink } from "@/app/_components/tracked_button";
-import { buttonFragment } from "@/lib/basehub/fragments";
 import { GeneralEvents } from "@/../basehub-types";
 
 export const calloutFragment = fragmentOn("CalloutComponent", {
   _analyticsKey: true,
   title: true,
   subtitle: true,
-  actions: buttonFragment,
 });
 export type CalloutFragment = fragmentOn.infer<typeof calloutFragment>;
 type Callout = CalloutFragment;
@@ -53,19 +50,6 @@ export function Callout(callout: Callout & { eventsKey: GeneralEvents["ingestKey
           <p className="text-text-secondary dark:text-dark-text-secondary text-lg md:text-xl">
             {callout.subtitle}
           </p>
-        </div>
-        <div className="relative z-10 flex items-center gap-2">
-          {callout.actions?.map((action) => (
-            <TrackedButtonLink
-              key={action._id}
-              analyticsKey={callout.eventsKey}
-              href={action.href}
-              intent={action.type}
-              name="secondary_cta_click"
-            >
-              {action.label}
-            </TrackedButtonLink>
-          ))}
         </div>
       </article>
     </Section>

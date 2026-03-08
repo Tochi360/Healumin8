@@ -25,12 +25,13 @@ import { useHasRendered } from "@/hooks/use-has-rendered";
 type HeaderCta = HeaderFragment["rightCtas"]["items"][number];
 
 const getCtaLabel = (cta: HeaderCta) => {
-  if (cta.type === "primary") return "Partner With Us";
+  if (cta.type === "primary") return "Book a Call";
   if (cta.type === "secondary") return "Request Demo";
   return cta.label;
 };
 
 const getCtaHref = (cta: HeaderCta) => {
+  if (cta.type === "primary") return "https://calendly.com/okonyetochi/30min";
   if (cta.type === "secondary") {
     // Always send "Request Demo" to the request-a-demo form section
     return "/#request-a-demo-form";
@@ -206,8 +207,9 @@ export function MobileMenu({ navbar, rightCtas }: HeaderFragment) {
             <div className="flex flex-col gap-8 px-6 py-8">
               {/* Mobile nav removed per design request */}
               <div className="flex items-center justify-start gap-2">
-                {rightCtas.items.map((cta) => {
-                  return (
+                {rightCtas.items
+                  .filter((cta) => cta.type !== "secondary")
+                  .map((cta) => (
                     <ButtonLink
                       key={cta._id}
                       href={getCtaHref(cta)}
@@ -216,8 +218,7 @@ export function MobileMenu({ navbar, rightCtas }: HeaderFragment) {
                     >
                       {getCtaLabel(cta)}
                     </ButtonLink>
-                  );
-                })}
+                  ))}
               </div>
             </div>
           </div>

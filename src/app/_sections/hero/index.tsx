@@ -54,7 +54,11 @@ export function Hero(
       : hero.subtitle);
   const isHealumin8Hero = hero.title === "Streamlined Communication for Iterating Fast";
   const getActionLabel = (label: string) =>
-    isHealumin8Hero && label === "Get Started for Free" ? "Partner With Us" : label;
+    isHealumin8Hero && label === "Get Started for Free" ? "Book a Call" : label;
+  const getActionHref = (href: string, label: string) =>
+    isHealumin8Hero && label === "Get Started for Free"
+      ? "https://calendly.com/okonyetochi/30min"
+      : href;
   const bannerText =
     isHealumin8Hero
       ? "Trusted by healthcare providers and health systems"
@@ -107,7 +111,7 @@ export function Hero(
                     ? "flex w-full"
                     : "max-w-sm:border-x-0! border-border dark:border-dark-border flex w-full border-x! border-y-0! bg-transparent! backdrop-blur-xl transition-colors duration-150 hover:bg-black/5! dark:hover:bg-white/5!",
                 )}
-                href={href}
+                href={getActionHref(href, label)}
                 intent={type}
                 name="cta_click"
               >

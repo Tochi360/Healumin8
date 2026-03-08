@@ -46,12 +46,15 @@ export async function FeaturesList({
   cardFramed = true,
   hideDescriptions = false,
   firstCardTitleOverride,
+  preserveFirstCardImage = false,
 }: FeatureCard & {
   firstCardCharacteristicsOverride?: { _title: string }[];
   mainTitleOverride?: string;
   cardFramed?: boolean;
   hideDescriptions?: boolean;
   firstCardTitleOverride?: string;
+  /** When true, keep the first card's image from featuresCardsList (used for Problem section). */
+  preserveFirstCardImage?: boolean;
 }) {
   const cards = featuresCardsList.items.map((item, index) => {
     if (index === 0) {
@@ -60,31 +63,33 @@ export async function FeaturesList({
         _title:
           firstCardTitleOverride ?? "Digitization Engine (Our Wedge)",
         description: "We help paper-based hospitals go digital in weeks.",
-        image: {
-          ...item.image,
-          dark: {
-            ...item.image.dark,
-            url: "/images/digitization-engine.png",
-            alt:
-              item.image.dark?.alt ??
-              "Paper hospital records being converted into structured digital patient profiles",
-            height: 558,
-            width: 1024,
-            aspectRatio: "1024/558",
-            blurDataURL: "",
-          },
-          light: {
-            ...item.image.light,
-            url: "/images/digitization-engine.png",
-            alt:
-              item.image.light?.alt ??
-              "Paper hospital records being converted into structured digital patient profiles",
-            height: 558,
-            width: 1024,
-            aspectRatio: "1024/558",
-            blurDataURL: "",
-          },
-        },
+        image: preserveFirstCardImage
+          ? item.image
+          : {
+              ...item.image,
+              dark: {
+                ...item.image.dark,
+                url: "/images/records-room-diverse.png",
+                alt:
+                  item.image.dark?.alt ??
+                  "Black healthcare workers converting paper hospital records into structured digital patient profiles",
+                height: 558,
+                width: 1024,
+                aspectRatio: "1024/558",
+                blurDataURL: "",
+              },
+              light: {
+                ...item.image.light,
+                url: "/images/records-room-diverse.png",
+                alt:
+                  item.image.light?.alt ??
+                  "Black healthcare workers converting paper hospital records into structured digital patient profiles",
+                height: 558,
+                width: 1024,
+                aspectRatio: "1024/558",
+                blurDataURL: "",
+              },
+            },
         characteristics: {
           items:
             firstCardCharacteristicsOverride ?? DEFAULT_FIRST_CARD_CHARACTERISTICS,
@@ -100,10 +105,10 @@ export async function FeaturesList({
           ...item.image,
           dark: {
             ...item.image.dark,
-            url: "/images/interoperable-network.png",
+            url: "/images/interoperable-network-diverse.png",
             alt:
               item.image.dark?.alt ??
-              "Diagram of hospitals and clinics connected to a central health data hub",
+              "Black clinicians reviewing interoperable health records and connected systems",
             height: 558,
             width: 1024,
             aspectRatio: "1024/558",
@@ -111,10 +116,10 @@ export async function FeaturesList({
           },
           light: {
             ...item.image.light,
-            url: "/images/interoperable-network.png",
+            url: "/images/interoperable-network-diverse.png",
             alt:
               item.image.light?.alt ??
-              "Diagram of hospitals and clinics connected to a central health data hub",
+              "Black clinicians reviewing interoperable health records and connected systems",
             height: 558,
             width: 1024,
             aspectRatio: "1024/558",
@@ -194,8 +199,8 @@ export async function FeaturesList({
               <DarkLightImage
                 {...image}
                 className="block aspect-video h-[200px] w-full rounded-lg border border-border object-cover dark:border-dark-border md:h-full"
-                height={748}
-                width={1120}
+                height={image.dark?.height ?? image.light?.height ?? 558}
+                width={image.dark?.width ?? image.light?.width ?? 1024}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 480px, 560px"
               />
             </figure>
