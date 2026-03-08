@@ -37,16 +37,16 @@ export async function sendDemoEmail(
   const { text, html } = formatSubmissionBody(data, schema);
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM_EMAIL ?? "Healumin8 Website <onboarding@resend.dev>";
-  const { data: sendData, error } = await resend.emails.send({
+  const result = await resend.emails.send({
     from,
     to: [to],
     subject: "New demo request from Healumin8 website",
     text,
     html: `<!DOCTYPE html><html><body>${html}</body></html>`,
   });
-  if (error) {
-    console.error("[sendDemoEmail] Resend error:", error.message, "id:", sendData?.id);
-    return { error: new Error(error.message) };
+  if (result.error) {
+    console.error("[sendDemoEmail] Resend error:", result.error.message);
+    return { error: new Error(result.error.message) };
   }
   return { error: null };
 }
